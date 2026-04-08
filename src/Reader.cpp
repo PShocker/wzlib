@@ -1,4 +1,5 @@
 #include "Reader.h"
+#include "Key.h"
 #include "SDL3/SDL_iostream.h"
 #include <cstdint>
 #include <string>
@@ -76,7 +77,7 @@ int32_t wz::Reader::read_compressed_int() {
   return result;
 }
 
-std::string wz::Reader::read_wz_string() {
+std::u16string wz::Reader::read_wz_string() {
   const auto len8 = (int8_t)read_u8();
   if (len8 == 0)
     return {};
@@ -94,7 +95,7 @@ std::string wz::Reader::read_wz_string() {
   if (len <= 0)
     return {};
 
-  std::string result;
+  std::u16string result;
   result.reserve(len);
 
   if (len8 > 0) {
