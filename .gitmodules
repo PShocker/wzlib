@@ -1,0 +1,6 @@
+[submodule "zlib"]
+	path = zlib
+	url = https://github.com/madler/zlib.git
+[submodule "AES"]
+	path = AES
+	url = https://github.com/SeaniaTwix/AES

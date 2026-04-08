@@ -1,0 +1,13 @@
+/.vs
+/Debug
+/Release
+/x64
+/cmake-build-debug
+/.idea
+/build
+/.cache
+
+*.sln
+*.vcproj
+*.vcxproj
+*.vcxproj.*
