@@ -27,10 +27,9 @@ public:
   std::string read_string(uint32_t num);
 
   int32_t read_compressed_int();
-  std::string read_wz_string();
+  std::u16string read_wz_string();
 
 private:
   SDL_IOStream *stream;
-  
 };
 } // namespace wz
