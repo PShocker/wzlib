@@ -1,23 +1,64 @@
 #pragma once
-#include "File.h"
+#include "Reader.h"
 #include "Types.h"
 #include "Wz.h"
+#include <flat_map>
 #include <string>
+#include <vector>
 
 namespace wz {
+
+class Node;
+class File;
+
+typedef std::vector<Node *> WzList;
+typedef std::flat_map<std::u16string, WzList> WzMap;
 
 class Node {
 public:
   explicit Node();
   explicit Node(const Type &new_type, File *root_file);
-
-  virtual ~Node();
+  explicit Node(const std::u16string &new_path, File *root_file);
 
   Node &operator[](const std::u16string &name);
 
   Node *get_child(const std::u16string &name);
 
-  virtual void appendChild(const std::u16string &name, Node *node);
-  virtual Node *get_parent() const;
+  Node *get_child(const std::string &name);
+
+  Node *get_parent() const;
+
+  std::u16string get_path() const;
+
+  size_t children_count() const;
+
+  void appendChild(const std::u16string &name, Node *node);
+
+  WzMap::iterator begin();
+
+  WzMap::iterator end();
+
+  Node *find_from_path(const std::u16string &path);
+
+  Node *find_from_path(const std::string &path);
+
+public:
+  Type type;
+
+  Node *parent;
+  WzMap children;
+
+  File *file;
+  Reader *reader = nullptr;
+
+  std::u16string path = u"";
+
+  bool parse_property_list(Node *target, size_t offset);
+  void parse_extended_prop(const std::u16string &name, Node *target,
+                           const size_t &offset);
+  WzCanvas parse_canvas_property();
+  WzSound parse_sound_property();
+
+  friend class Directory;
 };
 } // namespace wz

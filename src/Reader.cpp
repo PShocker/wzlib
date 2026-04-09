@@ -1,6 +1,7 @@
 #include "Reader.h"
 #include "Key.h"
 #include "SDL3/SDL_iostream.h"
+#include <cassert>
 #include <cstdint>
 #include <string>
 #include <vector>
@@ -45,6 +46,20 @@ uint64_t wz::Reader::read_u64() {
   return r;
 }
 
+float wz::Reader::read_f32() {
+  float r;
+  auto r2 = read_u32();
+  memcpy(&r, &r2, sizeof(float));
+  return r;
+}
+
+double wz::Reader::read_d64() {
+  double r;
+  auto r2 = read_u64();
+  memcpy(&r, &r2, sizeof(double));
+  return r;
+}
+
 std::vector<uint8_t> wz::Reader::read_bytes(uint64_t num) {
   std::vector<uint8_t> r;
   r.resize(num);
@@ -52,8 +67,8 @@ std::vector<uint8_t> wz::Reader::read_bytes(uint64_t num) {
   return r;
 }
 
-std::string wz::Reader::read_string() {
-  std::string result{};
+std::u16string wz::Reader::read_string() {
+  std::u16string result{};
 
   while (true) {
     auto c = static_cast<char>(read_u8());
@@ -64,9 +79,9 @@ std::string wz::Reader::read_string() {
   return result;
 }
 
-std::string wz::Reader::read_string(uint32_t num) {
+std::u16string wz::Reader::read_string(uint32_t num) {
   auto r = read_bytes(num);
-  std::string result{r.begin(), r.end()};
+  std::u16string result{r.begin(), r.end()};
   return result;
 }
 
@@ -113,10 +128,59 @@ std::u16string wz::Reader::read_wz_string() {
 
     for (int32_t i = 0; i < len; ++i) {
       const auto encrypted = read_u8();
-      result.push_back(static_cast<uint16_t>(encrypted ^ mask ^ key[i]));
+      uint8_t c = encrypted ^ mask ^ key[i];
+      uint8_t c2 = encrypted ^ mask;
+      result.push_back(c2);
+
+      // result.push_back(static_cast<uint16_t>(encrypted ^ mask ^ key[i]));
       ++mask;
     }
   }
 
   return result;
+}
+
+std::u16string wz::Reader::read_wz_string_from_offset(const size_t &offset) {
+  auto prev = get_position();
+  set_position(offset);
+  auto result = read_wz_string();
+  set_position(prev);
+  return result;
+}
+
+uint8_t wz::Reader::read_wz_string_from_offset(const size_t &offset,
+                                               std::u16string &out) {
+  auto prev = get_position();
+  set_position(offset);
+  auto result = read_u8();
+  out = read_wz_string();
+  set_position(prev);
+  return result;
+}
+
+bool wz::Reader::is_wz_image() {
+  if (read_u8() != 0x73)
+    return false;
+  if (read_wz_string() != u"Property")
+    return false;
+  if (read_u16() != 0)
+    return false;
+  return true;
+}
+
+std::u16string wz::Reader::read_string_block(const size_t &offset) {
+  switch (read_u8()) {
+  case 0:
+    [[fallthrough]];
+  case 0x73:
+    return read_wz_string();
+  case 1:
+    [[fallthrough]];
+  case 0x1B:
+    return read_wz_string_from_offset(offset + read_u32());
+  default: {
+    assert(0);
+  }
+  }
+  return {};
 }
