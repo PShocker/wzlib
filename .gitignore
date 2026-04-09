@@ -6,6 +6,8 @@
 /.idea
 /build
 /.cache
+/.vscode
+
 
 *.sln
 *.vcproj

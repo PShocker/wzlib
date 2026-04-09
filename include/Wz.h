@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdint>
 namespace wz {
 enum class Type {
   NotSet = 0x00,
@@ -21,4 +22,12 @@ enum class Type {
   UOL = 0x3C,
 };
 
-}
+struct Description {
+  uint32_t start;
+  uint32_t hash;
+  int16_t version;
+};
+
+uint32_t get_version_hash(int32_t encryptedVersion, int32_t realVersion);
+
+} // namespace wz

@@ -21,13 +21,21 @@ public:
   uint32_t read_u32();
   uint64_t read_u64();
 
+  float read_f32();
+  double read_d64();
+
   std::vector<uint8_t> read_bytes(uint64_t num);
 
-  std::string read_string();
-  std::string read_string(uint32_t num);
+  std::u16string read_string();
+  std::u16string read_string(uint32_t num);
 
   int32_t read_compressed_int();
   std::u16string read_wz_string();
+  std::u16string read_wz_string_from_offset(const size_t &offset);
+  uint8_t read_wz_string_from_offset(const size_t &offset, std::u16string &out);
+  std::u16string read_string_block(const size_t &offset);
+
+  bool is_wz_image();
 
 private:
   SDL_IOStream *stream;

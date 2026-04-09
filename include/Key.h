@@ -3,6 +3,10 @@
 #include <cstdint>
 #include <vector>
 namespace wz {
+
+static std::array<uint8_t, 4> iv;
+static std::vector<uint8_t> aes_key;
+
 class Key final {
 public:
   explicit Key() = default;
@@ -15,4 +19,5 @@ private:
 };
 
 static inline Key key;
+void init_key(std::array<uint8_t, 4> iv, std::vector<uint8_t> aes_key);
 } // namespace wz
