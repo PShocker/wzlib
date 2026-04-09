@@ -119,7 +119,8 @@ std::u16string wz::Reader::read_wz_string() {
 
     for (int32_t i = 0; i < len; ++i) {
       const auto encrypted = read_u16();
-      result.push_back(encrypted ^ mask ^ key[2 * i]);
+      result.push_back(encrypted ^ mask);
+      // result.push_back(encrypted ^ mask ^ key[2 * i]);
       ++mask;
     }
   } else {
@@ -128,10 +129,7 @@ std::u16string wz::Reader::read_wz_string() {
 
     for (int32_t i = 0; i < len; ++i) {
       const auto encrypted = read_u8();
-      uint8_t c = encrypted ^ mask ^ key[i];
-      uint8_t c2 = encrypted ^ mask;
-      result.push_back(c2);
-
+      result.push_back(encrypted ^ mask);
       // result.push_back(static_cast<uint16_t>(encrypted ^ mask ^ key[i]));
       ++mask;
     }

@@ -3,6 +3,7 @@
 #include "Node.h"
 #include <cstdint>
 #include <string>
+#include <vector>
 
 namespace wz {
 
@@ -12,7 +13,7 @@ static const uint32_t HeaderMagic = 0x31474B50;
 
 class File final {
 public:
-  File(const char *path);
+  File(const std::string &new_path);
 
   bool parse();
 
@@ -21,11 +22,19 @@ public:
   Node &operator[](const std::u16string &name);
 
 private:
-  Node *root;
+  std::vector<Node *> roots;
 
   Description desc{};
 
-  Reader reader;
+  std::string path;
+
+  std::flat_map<std::u16string, File> children;
+
+  bool parse_wz();
+
+  bool parse_sub_node();
+
+  bool parse_sub_wz();
 
   bool parse_directories(Node *node);
 
