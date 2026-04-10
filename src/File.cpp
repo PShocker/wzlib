@@ -4,11 +4,17 @@
 #include <cassert>
 #include <charconv>
 #include <cstdint>
-#include <filesystem>
-#include <iostream>
 #include <string>
 
-wz::File::File(const std::string &new_path) : path(new_path) {}
+wz::File::File(const char *path)
+    : reader(Reader(path)), root(new Node(Type::NotSet, this)) {}
+
+wz::File::~File() { delete root; }
+
+wz::Node *wz::File::get_root() const
+{
+    return root;
+}
 
 bool wz::File::parse_directories(wz::Node *node) {
   auto entry_count = reader.read_compressed_int();
@@ -30,32 +36,20 @@ bool wz::File::parse_directories(wz::Node *node) {
     } else {
       assert(0);
     }
-
     auto size = reader.read_compressed_int();
+
     auto checksum = reader.read_compressed_int();
     auto offset = get_wz_offset();
 
-    if (node == nullptr && offset >= reader.size())
+    if (offset >= reader.size())
       return false;
 
     if (type == 3) {
-      if (node != nullptr) {
-        auto *dir = new Directory(this, false, size, offset);
-        node->appendChild({name.begin(), name.end()}, dir);
-      }
+      auto *dir = new Directory(this, false, size, offset);
+      node->appendChild({name.begin(), name.end()}, dir);
     } else {
-      if (node != nullptr) {
-        auto *dir = new Directory(this, true, size, offset);
-        node->appendChild({name.begin(), name.end()}, dir);
-      } else {
-        prevPos = reader.get_position();
-        reader.set_position(offset);
-
-        if (!reader.is_wz_image())
-          return false;
-
-        reader.set_position(prevPos);
-      }
+      auto *dir = new Directory(this, true, size, offset);
+      node->appendChild({name.begin(), name.end()}, dir);
     }
   }
 
@@ -77,27 +71,7 @@ bool wz::File::parse_directories(wz::Node *node) {
   return true;
 }
 
-bool wz::File::parse() {}
-
-bool wz::File::parse_sub_node() {}
-
-bool wz::File::parse_sub_wz() {
-  auto wz_file_num = 0;
-  auto wz_ini_path = path + ".ini";
-
-  Reader r(wz_ini_path.c_str());
-  auto v = r.read_bytes(r.size());
-  std::string text{v.begin(), v.end()};
-  auto pos = text.find_last_of('|');
-  auto result = text.substr(pos + 1);
-  std::from_chars(result.data(), result.data() + result.size(), wz_file_num);
-
-  for (uint8_t i = 0; i <= wz_file_num; i++) {
-    auto wz_path = path + "_" + std::format("{:03d}", wz_file_num) + ".wz";
-  }
-}
-
-bool wz::File::parse_wz() {
+bool wz::File::parse() {
   auto magic = reader.read_string(4);
   if (magic != u"PKG1")
     return false;

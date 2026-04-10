@@ -50,10 +50,10 @@ template <> std::vector<uint8_t> wz::Property<wz::WzSound>::get_raw_data() {
 // get uol By uol node
 template <> wz::Node *wz::Property<wz::WzUOL>::get_uol() {
   auto path = get().uol;
-  auto uol_node = parent->find_from_path(path);
+  auto uol_node = parent->find(path);
   while (uol_node->type == wz::Type::UOL) {
     path = static_cast<wz::Property<wz::WzUOL> *>(uol_node)->get().uol;
-    uol_node = uol_node->parent->find_from_path(path);
+    uol_node = uol_node->parent->find(path);
   }
 
   return uol_node;

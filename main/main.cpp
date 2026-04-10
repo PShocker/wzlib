@@ -4,7 +4,7 @@
 #include <algorithm>
 
 #include <Directory.h>
-#include <File.h>
+#include <Files.h>
 #include <Node.h>
 #include <Property.h>
 
@@ -19,11 +19,14 @@ static std::vector<uint8_t> aes_key = {
 
 int main() {
   wz::init_key(iv, aes_key);
-  wz::File file("Data/Map/Map.wz");
-
-  if (file.parse()) {
-    wz::Node *node = file.get_root()->find_from_path(u"Map/Map1/101000000.img");
-    return 1;
-  }
+  wz::Files files("Map");
+  // wz::Files files("Sound");
+  // auto n = (*files[u"MapHelper.img"])[u"213"];
+  auto n = files.find(u"MapHelper.img/weather/snow/0");
+  // auto n = files[u"MapHelper.img"][u"weather"];
+  // if (file.parse()) {
+  //   wz::Node *node =
+  //   file.get_root()->find_from_path(u"Map/Map1/101000000.img"); return 1;
+  // }
   return 0;
 }

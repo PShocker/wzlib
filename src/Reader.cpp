@@ -86,7 +86,7 @@ std::u16string wz::Reader::read_string(uint32_t num) {
 }
 
 int32_t wz::Reader::read_compressed_int() {
-  auto result = static_cast<int32_t>(read_u8());
+  auto result = (int8_t)read_u8();
   if (result == INT8_MIN)
     return (int32_t)read_u32();
   return result;

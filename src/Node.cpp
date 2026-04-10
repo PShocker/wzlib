@@ -238,11 +238,9 @@ wz::Node *wz::Node::get_child(const std::string &name) {
   return get_child(std::u16string{name.begin(), name.end()});
 }
 
-wz::Node &wz::Node::operator[](const std::u16string &name) {
-  return *get_child(name);
-}
+std::u16string wz::Node::get_path() const { return path; }
 
-wz::Node *wz::Node::find_from_path(const std::u16string &path) {
+wz::Node *wz::Node::find(const std::u16string &path) {
   auto next = std::views::split(path, u'/') | std::views::common;
   wz::Node *node = this;
   for (const auto &s : next) {
@@ -278,6 +276,6 @@ wz::Node *wz::Node::find_from_path(const std::u16string &path) {
   return node;
 }
 
-wz::Node *wz::Node::find_from_path(const std::string &path) {
-  return find_from_path(std::u16string{path.begin(), path.end()});
+wz::Node *wz::Node::find(const std::string &path) {
+  return find(std::u16string{path.begin(), path.end()});
 }
