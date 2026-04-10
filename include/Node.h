@@ -20,8 +20,6 @@ public:
   explicit Node(const Type &new_type, File *root_file);
   explicit Node(const std::u16string &new_path, File *root_file);
 
-  Node &operator[](const std::u16string &name);
-
   Node *get_child(const std::u16string &name);
 
   Node *get_child(const std::string &name);
@@ -38,9 +36,9 @@ public:
 
   WzMap::iterator end();
 
-  Node *find_from_path(const std::u16string &path);
+  Node *find(const std::u16string &path);
 
-  Node *find_from_path(const std::string &path);
+  Node *find(const std::string &path);
 
 public:
   Type type;
