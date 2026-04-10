@@ -20,18 +20,7 @@ static std::vector<uint8_t> aes_key = {
 int main() {
   wz::init_key(iv, aes_key);
   wz::Files files("Map/Map");
-  // wz::Files files("Map/_Canvas");
-  // wz::Files files("Sound");
-  // auto n = (*files[u"MapHelper.img"])[u"213"];
-  // auto n = files.find(u"MapHelper.img/weather/snow/0");
-  // auto n = files.find(u"_Canvas/MapHelper.img/weather/snow/0");
-  auto n = files.find(u"_Canvas/MapHelper.img");
-  // auto n = files.find(u"_Canvas/MapHelper.img/weather/snow/0");
-  // auto n = files[u"MapHelper.img"][u"weather"];
-  // if (file.parse()) {
-  //   wz::Node *node =
-  //   file.get_root()->find_from_path(u"Map/Map1/101000000.img"); return 1;
-  // }
-  // auto t = static_cast<wz::Property<wz::WzCanvas> *>(n)->get();
+  auto n = files.find(u"_Canvas/MapHelper.img/weather/cloud/0");
+  auto t = static_cast<wz::Property<wz::WzCanvas> *>(n)->get();
   return 0;
 }
