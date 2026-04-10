@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <flat_map>
 #include <string>
+#include <vector>
 
 namespace wz {
 
@@ -12,10 +13,14 @@ class Files final {
 public:
   Files(const std::string &path);
 
-  Node *find(const std::u16string &name);
+  Node *find(const std::u16string &path);
 
 private:
-  std::flat_multimap<std::u16string, File *> children;
+  std::flat_map<std::u16string, Files *> files;
+
+  std::vector<File *> children;
+
+  std::string parse_str_path_front(const std::string &path);
 
   void parse_sub_wz(const std::string &path);
 

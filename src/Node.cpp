@@ -261,6 +261,7 @@ wz::Node *wz::Node::find(const std::u16string &path) {
             node = cache[node];
           } else {
             auto *image = new wz::Node(this->path, file);
+            image->parent = node;
             auto *dir = static_cast<wz::Directory *>(node);
             dir->parse_image(image);
             cache[node] = image;
