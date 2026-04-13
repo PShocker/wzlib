@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_subdirectory(zlib)
 
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/zlib")
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include/wz")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/AES")
 
 include_directories("C:/SDL3-3.4.0/include")
