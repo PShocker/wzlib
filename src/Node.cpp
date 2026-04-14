@@ -240,6 +240,8 @@ wz::Node *wz::Node::get_child(const std::string &name) {
 
 std::u16string wz::Node::get_path() const { return path; }
 
+wz::WzMap *wz::Node::get_children() { return &children; }
+
 wz::Node *wz::Node::find(const std::u16string &path) {
   auto next = std::views::split(path, u'/') | std::views::common;
   wz::Node *node = this;
