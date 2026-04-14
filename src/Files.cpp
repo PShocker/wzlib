@@ -102,3 +102,7 @@ wz::Node *wz::Files::find(const std::u16string &path) {
   }
   return node;
 }
+
+wz::Node *wz::Files::find(const std::string &path) {
+  return find(std::u16string{path.begin(), path.end()});
+}
