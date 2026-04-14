@@ -15,6 +15,8 @@ public:
 
   Node *find(const std::u16string &path);
 
+  Node *find(const std::string &path);
+
 private:
   std::flat_map<std::u16string, Files *> files;
 
