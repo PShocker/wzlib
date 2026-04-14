@@ -28,6 +28,8 @@ public:
 
   std::u16string get_path() const;
 
+  WzMap *get_children();
+
   size_t children_count() const;
 
   void appendChild(const std::u16string &name, Node *node);
