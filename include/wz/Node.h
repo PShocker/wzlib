@@ -18,15 +18,12 @@ class Node {
 public:
   explicit Node();
   explicit Node(const Type &new_type, File *root_file);
-  explicit Node(const std::u16string &new_path, File *root_file);
 
   Node *get_child(const std::u16string &name);
 
   Node *get_child(const std::string &name);
 
   Node *get_parent() const;
-
-  std::u16string get_path() const;
 
   WzMap *get_children();
 
@@ -50,8 +47,6 @@ public:
 
   File *file;
   Reader *reader = nullptr;
-
-  std::u16string path = u"";
 
   bool parse_property_list(Node *target, size_t offset);
   void parse_extended_prop(const std::u16string &name, Node *target,
