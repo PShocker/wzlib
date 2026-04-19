@@ -16,8 +16,11 @@ link_directories("C:/SDL3-3.4.0/lib/x64")
 file(GLOB SOURCE_FILES src/*.cpp)
 file(GLOB AES_SOURCE_FILES AES/AES.cpp)
 
-add_library(wzlib ${SOURCE_FILES} ${AES_SOURCE_FILES})
-target_link_libraries(wzlib zlibstatic)
+add_library(wzlib STATIC 
+    ${SOURCE_FILES} 
+    ${AES_SOURCE_FILES}
+    $<TARGET_OBJECTS:zlibstatic>  # 直接使用 zlibstatic 的对象文件
+)
 
 if(WIN32)
         project(wzlibtest)
