@@ -6,18 +6,15 @@
 #include <cstdint>
 #include <format>
 #include <ranges>
-
-std::string wz::Files::parse_str_path_front(const std::string &path) {
-  size_t pos = path.find_last_of('/');
-  if (pos == std::string::npos) {
-    return path; // 没有斜杠，返回原字符串
-  }
-  return path.substr(0, pos);
-}
+#include <string>
 
 void wz::Files::parse_sub_node(const std::string &path) {
 
-  auto front = parse_str_path_front(path);
+  std::string front = path;
+  size_t pos = path.find_last_of('/');
+  if (pos != std::string::npos) {
+    front = path.substr(0, pos);
+  }
 
   std::string full_path = "Data/" + path + ".wz";
 

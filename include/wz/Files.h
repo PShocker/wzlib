@@ -22,8 +22,6 @@ private:
 
   std::vector<File *> children;
 
-  std::string parse_str_path_front(const std::string &path);
-
   void parse_sub_wz(const std::string &path);
 
   void parse_sub_node(const std::string &path);
