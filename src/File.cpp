@@ -7,14 +7,13 @@
 #include <string>
 
 wz::File::File(const char *path)
-    : reader(Reader(path)), root(new Node(Type::NotSet, this)) {}
+    : reader(Reader(path)), root(new Node(Type::NotSet, this)) {
+  parse();
+}
 
 wz::File::~File() { delete root; }
 
-wz::Node *wz::File::get_root() const
-{
-    return root;
-}
+wz::Node *wz::File::get_root() const { return root; }
 
 bool wz::File::parse_directories(wz::Node *node) {
   auto entry_count = reader.read_compressed_int();

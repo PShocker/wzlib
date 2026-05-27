@@ -18,9 +18,12 @@ static std::vector<uint8_t> aes_key = {
     0x00, 0x00, 0x33, 0x00, 0x00, 0x00, 0x52, 0x00, 0x00, 0x00};
 
 int main() {
-  wz::init_key(iv, aes_key);
-  wz::Files files("Map/Map");
-  auto n = files.find(u"_Canvas/MapHelper.img/weather/cloud/0");
-  auto t = static_cast<wz::Property<wz::WzCanvas> *>(n)->get();
+  // wz::init_key(iv, aes_key);
+  // wz::Files files("Map/Map");
+  // auto n = files.find(u"_Canvas/MapHelper.img/weather/cloud/0");
+  // auto t = static_cast<wz::Property<wz::WzCanvas> *>(n)->get();
+  wz::File file("String2.wz");
+  auto b = file.get_root()->find("JobName.img/000");
+  auto bs = static_cast<wz::Property<std::u16string> *>(b)->get();
   return 0;
 }
