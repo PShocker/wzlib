@@ -19,7 +19,6 @@ void wz::Files::parse_sub_node(const std::string &path) {
   std::string full_path = "Data/" + path + ".wz";
 
   File file(full_path.c_str());
-  file.parse();
 
   for (auto node : file.get_root()->children) {
     auto name = node.first;
@@ -58,10 +57,7 @@ void wz::Files::parse_sub_wz(const std::string &path) {
 
   for (uint8_t i = 0; i <= num; i++) {
     auto f_path = full_path + "_" + std::format("{:03d}", i) + ".wz";
-
     auto f = new File(f_path.c_str());
-    f->parse();
-
     children.push_back(f);
   }
 }
