@@ -11,7 +11,7 @@ namespace wz {
 
 class Files final {
 public:
-  Files(const std::string &path);
+  Files(const std::string &root, const std::string &path);
 
   Node *find(const std::u16string &path);
 
@@ -22,10 +22,10 @@ private:
 
   std::vector<File *> children;
 
-  void parse_sub_wz(const std::string &path);
+  void parse_sub_wz(const std::string &root, const std::string &path);
 
-  void parse_sub_node(const std::string &path);
+  void parse_sub_node(const std::string &root, const std::string &path);
 
-  uint32_t parse_ini_num(const std::string &path);
+  uint32_t parse_ini_num(const std::string &root, const std::string &path);
 };
 } // namespace wz

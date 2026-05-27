@@ -19,7 +19,7 @@ static std::vector<uint8_t> aes_key = {
 
 int main() {
   // wz::init_key(iv, aes_key);
-  // wz::Files files("Map/Map");
+  wz::Files files("Data/", "Map/Map");
   // auto n = files.find(u"_Canvas/MapHelper.img/weather/cloud/0");
   // auto t = static_cast<wz::Property<wz::WzCanvas> *>(n)->get();
   wz::File file("String2.wz");

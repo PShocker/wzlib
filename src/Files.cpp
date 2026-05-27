@@ -8,7 +8,8 @@
 #include <ranges>
 #include <string>
 
-void wz::Files::parse_sub_node(const std::string &path) {
+void wz::Files::parse_sub_node(const std::string &root,
+                               const std::string &path) {
 
   std::string front = path;
   size_t pos = path.find_last_of('/');
@@ -16,7 +17,7 @@ void wz::Files::parse_sub_node(const std::string &path) {
     front = path.substr(0, pos);
   }
 
-  std::string full_path = "Data/" + path + ".wz";
+  std::string full_path = root + path + ".wz";
 
   File file(full_path.c_str());
 
@@ -25,16 +26,17 @@ void wz::Files::parse_sub_node(const std::string &path) {
 
     auto name2 = std::string{name.begin(), name.end()};
     full_path = front + "/" + name2 + "/" + name2;
-    auto f = new Files(full_path.c_str());
+    auto f = new Files(root, full_path.c_str());
 
     files.insert({name, f});
   }
 }
 
-uint32_t wz::Files::parse_ini_num(const std::string &path) {
+uint32_t wz::Files::parse_ini_num(const std::string &root,
+                                  const std::string &path) {
   auto ini_num = 0;
 
-  std::string full_path = "Data/" + path + ".ini";
+  std::string full_path = root + path + ".ini";
 
   Reader r(full_path.c_str());
 
@@ -49,11 +51,11 @@ uint32_t wz::Files::parse_ini_num(const std::string &path) {
   return ini_num;
 }
 
-void wz::Files::parse_sub_wz(const std::string &path) {
+void wz::Files::parse_sub_wz(const std::string &root, const std::string &path) {
 
-  auto num = parse_ini_num(path);
+  auto num = parse_ini_num(root, path);
 
-  std::string full_path = "Data/" + path;
+  std::string full_path = root + path;
 
   for (uint8_t i = 0; i <= num; i++) {
     auto f_path = full_path + "_" + std::format("{:03d}", i) + ".wz";
@@ -62,9 +64,9 @@ void wz::Files::parse_sub_wz(const std::string &path) {
   }
 }
 
-wz::Files::Files(const std::string &path) {
-  parse_sub_node(path);
-  parse_sub_wz(path);
+wz::Files::Files(const std::string &root, const std::string &path) {
+  parse_sub_node(root, path);
+  parse_sub_wz(root, path);
 }
 
 wz::Node *wz::Files::find(const std::u16string &path) {
