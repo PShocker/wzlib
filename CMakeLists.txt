@@ -21,8 +21,8 @@ include_directories("${CMAKE_CURRENT_SOURCE_DIR}/zlib")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include/wz")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/AES")
 
-include_directories("C:/SDL3-3.4.0/include")
-link_directories("C:/SDL3-3.4.0/lib/x64")
+include_directories("C:/SDL3-3.4.10/include")
+link_directories("C:/SDL3-3.4.10/lib/x64")
 
 file(GLOB SOURCE_FILES src/*.cpp)
 file(GLOB AES_SOURCE_FILES AES/AES.cpp)

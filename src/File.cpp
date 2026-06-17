@@ -51,22 +51,6 @@ bool wz::File::parse_directories(wz::Node *node) {
       node->appendChild({name.begin(), name.end()}, dir);
     }
   }
-
-  //   if (node != nullptr) {
-  //     for (auto &it : *node) {
-  //       for (auto child : it.second) {
-  //         auto *dir = dynamic_cast<Directory *>(child);
-
-  //         if (dir != nullptr) {
-  //           if (!dir->is_image()) {
-  //             reader.set_position(dir->get_offset());
-  //             parse_directories(dir);
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }
-
   return true;
 }
 

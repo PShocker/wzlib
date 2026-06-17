@@ -17,8 +17,6 @@ public:
 
   ~File();
 
-  bool parse();
-
   Node *get_root() const;
 
 private:
@@ -27,6 +25,8 @@ private:
   Description desc{};
 
   Reader reader;
+
+  bool parse();
 
   bool parse_directories(Node *node);
 
