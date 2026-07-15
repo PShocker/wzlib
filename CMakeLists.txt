@@ -10,8 +10,8 @@ if(CMAKE_BUILD_TYPE STREQUAL "Release")
         set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s")
         # 启用lto -flto=auto
         # 对本机cpu生成特定优化代码,可能存在兼容性问题
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -flto=auto")
+        # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
+        # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -flto=auto")
     endif()
 endif()
 
@@ -27,10 +27,14 @@ link_directories("C:/SDL3-3.4.10/lib/x64")
 file(GLOB SOURCE_FILES src/*.cpp)
 file(GLOB AES_SOURCE_FILES AES/AES.cpp)
 
-add_library(wzlib STATIC 
+add_library(wzlib SHARED
     ${SOURCE_FILES} 
     ${AES_SOURCE_FILES}
     $<TARGET_OBJECTS:zlibstatic>  # 直接使用 zlibstatic 的对象文件
+)
+
+target_link_libraries(wzlib PRIVATE
+    SDL3  
 )
 
 if(WIN32)

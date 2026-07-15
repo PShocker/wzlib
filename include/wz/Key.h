@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <vector>
+#include <array>
 namespace wz {
 
 static std::array<uint8_t, 4> iv;
