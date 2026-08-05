@@ -66,9 +66,9 @@ bool wz::File::parse() {
 
   reader.set_position(startAt);
 
-  auto encryptedVersion = (int16_t)reader.read_u16();
+  auto encryptedVersion = reader.read_u16();
 
-  for (int i = 0; i < 0x7FFF; ++i) {
+  for (int i = 0; i < INT16_MAX; ++i) {
     int16_t file_version = static_cast<decltype(file_version)>(i);
     auto version_hash = wz::get_version_hash(encryptedVersion, file_version);
 
@@ -86,13 +86,17 @@ bool wz::File::parse() {
 }
 
 uint32_t wz::File::get_wz_offset() {
-  uint32_t offset = static_cast<uint32_t>(reader.get_position());
-  offset = ~(offset - desc.start);
+  auto filePos = reader.get_position();
+  uint32_t encryptedOffset = reader.read_u32();
+  uint32_t offset = (int)(filePos - 0x3C) ^ 0xFFFFFFFF;
+  int distance;
+
   offset *= desc.hash;
   offset -= wz::OffsetKey;
-  offset = (offset << (offset & 0x1Fu)) | (offset >> (32 - (offset & 0x1Fu)));
-  uint32_t encryptedOffset = reader.read_u32();
+  distance = (int)offset & 0x1F;
+  offset = (offset << distance) | (offset >> (32 - distance));
   offset ^= encryptedOffset;
-  offset += desc.start * 2;
+  offset += 0x78;
+
   return offset;
 }
