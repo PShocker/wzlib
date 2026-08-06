@@ -19,13 +19,13 @@ static std::vector<uint8_t> aes_key = {
 
 int main() {
   // wz::init_key(iv, aes_key);
-  // wz::Files files("Data/", "Character/Character");
-  // auto n = files.find(u"00002000.img");
+  wz::Files files("Data/", "Character/Character");
+  auto n = files.find(u"00002000.img");
   // auto info=n->find(u"info");
   // auto t = static_cast<wz::Property<wz::WzCanvas> *>(n)->get();
-  wz::File file("Data/Character/Character_000.wz");
+  // wz::File file("Data/Character/Character_000.wz");
   // wz::File file("Data/sdlms.wz");
-  auto b = file.get_root()->find("String.img/Job/000");
+  // auto b = file.get_root()->find("String.img/Job/000");
   // auto bs = static_cast<wz::Property<std::u16string> *>(b)->get();
   return 0;
 }

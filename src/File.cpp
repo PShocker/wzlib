@@ -44,11 +44,22 @@ bool wz::File::parse_directories(wz::Node *node) {
       return false;
 
     if (type == 3) {
-      auto *dir = new Directory(this, false, size, offset);
-      node->appendChild({name.begin(), name.end()}, dir);
+      if (node != nullptr) {
+        auto *dir = new Directory(this, false, size, offset);
+        node->appendChild({name.begin(), name.end()}, dir);
+      }
+
     } else {
-      auto *dir = new Directory(this, true, size, offset);
-      node->appendChild({name.begin(), name.end()}, dir);
+      if (node != nullptr) {
+        auto *dir = new Directory(this, true, size, offset);
+        node->appendChild({name.begin(), name.end()}, dir);
+      } else {
+        prevPos = reader.get_position();
+        reader.set_position(offset);
+        if (!reader.is_wz_image())
+          return false;
+        reader.set_position(prevPos);
+      }
     }
   }
   return true;
@@ -68,19 +79,23 @@ bool wz::File::parse() {
 
   auto encryptedVersion = reader.read_u16();
 
-  for (int i = 0; i < INT16_MAX; ++i) {
-    int16_t file_version = static_cast<decltype(file_version)>(i);
-    auto version_hash = wz::get_version_hash(encryptedVersion, file_version);
+  auto prev_position = reader.get_position();
 
+  for (int i = 0; i < INT16_MAX; ++i) {
+    int16_t file_version = i;
+    auto version_hash = wz::get_version_hash(encryptedVersion, file_version);
     if (version_hash != 0) {
       desc.start = startAt;
       desc.hash = version_hash;
       desc.version = file_version;
-
-      parse_directories(root);
-      return true;
+      if (parse_directories(nullptr)) {
+        break;
+      }
+      reader.set_position(prev_position);
     }
   }
+  reader.set_position(prev_position);
+  parse_directories(root);
 
   return false;
 }

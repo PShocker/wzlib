@@ -16,6 +16,11 @@ typedef std::flat_map<std::u16string, WzList> WzMap;
 
 class Node {
 public:
+  Type type;
+  Node *parent;
+  WzMap children;
+  Reader *reader;
+
   explicit Node();
   explicit Node(const Type &new_type, File *root_file);
 
@@ -39,14 +44,8 @@ public:
 
   Node *find(const std::string &path);
 
-public:
-  Type type;
-
-  Node *parent;
-  WzMap children;
-
+private:
   File *file;
-  Reader *reader = nullptr;
 
   bool parse_property_list(Node *target, size_t offset);
   void parse_extended_prop(const std::u16string &name, Node *target,
